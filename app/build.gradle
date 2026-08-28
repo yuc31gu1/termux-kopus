@@ -91,7 +91,7 @@ task versionName {
   }
 }
 
-def downloadBootstrap(String arch, String expectedChecksum, int version) {
+def downloadBootstrap(String arch, String expectedChecksum, String version) {
     def digest = java.security.MessageDigest.getInstance("SHA-256")
 
     def localUrl = "src/main/cpp/bootstrap-" + arch + ".zip"
