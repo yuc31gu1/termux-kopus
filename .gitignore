@@ -18,3 +18,4 @@ local.properties
 # Signing
 *.jks
 kopus-keystore.jks
+.kopus-keystore-password.txt
