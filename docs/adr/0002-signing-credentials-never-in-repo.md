@@ -1,0 +1,3 @@
+# 0002: Signing credentials never live in the repo
+
+The release APK is signed with a keystore whose credentials are stored exclusively as GitHub Actions secrets (`KOPUS_KEYSTORE`, `KOPUS_KEYSTORE_PASSWORD`, `KOPUS_KEY_ALIAS`, `KOPUS_KEY_PASSWORD`). Nothing credential-shaped is committed: the keystore and its password file are gitignored, and the CI workflow decodes the keystore from a secret at build time. This avoids both accidental credential leaks and the lock-in of a repo-embedded key. Termux's upstream debug keystore was deleted from the tree in the first commit; the signing config reads release credentials from environment variables so the build fails loudly if they are absent rather than silently shipping an unsigned or wrongly-signed APK.
