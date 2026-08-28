@@ -14,7 +14,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.termux.kopus"
+        applicationId "com.termux"
         minSdkVersion project.properties.minSdkVersion.toInteger()
         targetSdkVersion project.properties.targetSdkVersion.toInteger()
         versionCode 99
@@ -113,7 +113,7 @@ def downloadBootstrap(String arch, String expectedChecksum, String version) {
         }
     }
 
-    def remoteUrl = "https://github.com/yuc31gu1/termux-kopus/releases/download/bootstrap-kopus/bootstrap-" + arch + ".zip"
+    def remoteUrl = "https://github.com/termux/termux-packages/releases/download/bootstrap-" + version + "/bootstrap-" + arch + ".zip"
     logger.quiet("Downloading " + remoteUrl + " ...")
 
     file.parentFile.mkdirs()
@@ -142,8 +142,8 @@ clean {
 
 task downloadBootstraps(){
     doLast {
-        def version = "kopus"
-        downloadBootstrap("aarch64", "FILL_IN_AFTER_FIRST_BOOTSTRAP_BUILD", version)
+        def version = "2022.04.28-r6" + "+" + "apt-android-5"
+        downloadBootstrap("aarch64", "913609d439415c828c5640be1b0561467e539cb1c7080662decaaca2fb4820e7", version)
     }
 }
 
