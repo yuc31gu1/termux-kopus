@@ -1,0 +1,53 @@
+name: Build kopus bootstrap
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'  # weekly refresh
+
+permissions:
+  contents: write
+
+jobs:
+  build-bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout termux-packages
+        uses: actions/checkout@v4
+        with:
+          repository: termux/termux-packages
+          fetch-depth: 1000
+
+      - name: Patch package name to kopus
+        run: |
+          sed -i 's/TERMUX_APP__PACKAGE_NAME="com.termux"/TERMUX_APP__PACKAGE_NAME="com.termux.kopus"/' scripts/properties.sh
+          grep -n "TERMUX_APP__PACKAGE_NAME=" scripts/properties.sh | head -3
+
+      - name: Build aarch64 bootstrap from source
+        run: |
+          ./scripts/run-docker.sh ./scripts/build-bootstraps.sh --architectures aarch64 2>&1 | tail -30
+
+      - name: List output
+        run: ls -la bootstrap-aarch64.zip
+
+      - name: Compute checksum
+        id: checksum
+        run: |
+          sha256sum bootstrap-aarch64.zip
+
+      - name: Publish bootstrap release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create bootstrap-kopus bootstrap-aarch64.zip \
+            --title "kopus bootstrap (aarch64)" \
+            --notes "Termux bootstrap recompiled with prefix /data/data/com.termux.kopus/files" \
+            --repo ${{ github.repository }} --clobber || \
+          gh release upload bootstrap-kopus bootstrap-aarch64.zip \
+            --repo ${{ github.repository }} --clobber
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kopus-bootstrap-aarch64
+          path: bootstrap-aarch64.zip

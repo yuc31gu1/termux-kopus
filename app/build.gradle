@@ -27,7 +27,7 @@ android {
         }
 
         ndk {
-            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+            abiFilters 'arm64-v8a'
         }
 
     }
@@ -113,7 +113,7 @@ def downloadBootstrap(String arch, String expectedChecksum, String version) {
         }
     }
 
-    def remoteUrl = "https://github.com/termux/termux-packages/releases/download/bootstrap-" + version + "/bootstrap-" + arch + ".zip"
+    def remoteUrl = "https://github.com/yuc31gu1/termux-kopus/releases/download/bootstrap-kopus/bootstrap-" + arch + ".zip"
     logger.quiet("Downloading " + remoteUrl + " ...")
 
     file.parentFile.mkdirs()
@@ -142,11 +142,8 @@ clean {
 
 task downloadBootstraps(){
     doLast {
-        def version = "2022.04.28-r6" + "+" + "apt-android-5"
-        downloadBootstrap("aarch64", "913609d439415c828c5640be1b0561467e539cb1c7080662decaaca2fb4820e7", version)
-        downloadBootstrap("arm",     "26bfb45304c946170db69108e5eb6e3641aad751406ce106c80df80cad2eccf8", version)
-        downloadBootstrap("i686",    "46dcfeb5eef67ba765498db9fe4c50dc4690805139aa0dd141a9d8ee0693cd27", version)
-        downloadBootstrap("x86_64",  "615b590679ee6cd885b7fd2ff9473c845e920f9b422f790bb158c63fe42b8481", version)
+        def version = "kopus"
+        downloadBootstrap("aarch64", "FILL_IN_AFTER_FIRST_BOOTSTRAP_BUILD", version)
     }
 }
 
