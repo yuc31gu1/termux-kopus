@@ -1,37 +1,20 @@
-# From https://gist.github.com/iainconnor/8605514
-# with the addition of the /captures below.
-/captures
-
-# Built application files
+# Android / Gradle build outputs
 build/
-*.apk
-*.so
-.externalNativeBuild
-.cxx
-*.zip
-
-# Crashlytics configuations
-com_crashlytics_export_strings.xml
-
-# Local configuration file (sdk path, etc)
-local.properties
-
-# Gradle generated files
+app/build/
+terminal-emulator/build/
+terminal-view/build/
+.cxx/
 .gradle/
+local.properties
+*.apk
 
-# Signing files
-.signing/
-
-# Intellij
+# IDE
 .idea/
 *.iml
 
-# OS-specific files
+# macOS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-.swp
-ehthumbs.db
-Thumbs.db
+
+# Signing
+*.jks
+kopus-keystore.jks

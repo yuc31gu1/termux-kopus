@@ -1,0 +1,3 @@
+# 0001: Configuration is commands, not settings
+
+The app is deliberately a pure terminal: no in-app settings screen, no stored preferences. The user configures everything by typing normal commands (e.g. `ssh user@mac-ip`, feature toggles typed in the terminal), because the app is a terminal and setup happens where you'd naturally type. The single carve-out is that the app remembers the last Mac address it connected to, so the launch screen can connect and list recent sessions. Future readers should not "fix" this into a settings UI.
