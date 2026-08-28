@@ -113,7 +113,7 @@ def downloadBootstrap(String arch, String expectedChecksum, int version) {
         }
     }
 
-    def remoteUrl = "https://bintray.com/termux/bootstrap/download_file?file_path=bootstrap-" + arch + "-v" + version + ".zip"
+    def remoteUrl = "https://github.com/termux/termux-packages/releases/download/bootstrap-" + version + "/bootstrap-" + arch + ".zip"
     logger.quiet("Downloading " + remoteUrl + " ...")
 
     file.parentFile.mkdirs()
@@ -142,11 +142,11 @@ clean {
 
 task downloadBootstraps(){
     doLast {
-        def version = 28
-        downloadBootstrap("aarch64", "8f8c8af1d6c50bd0d6ecd5a1df8d5b0c3122a945b6febd0de0308504b4075ed0", version)
-        downloadBootstrap("arm",     "179465f403a73fec6534363b11cb38eed3b6b3d8e9d922d8e55dc8a06813240d", version)
-        downloadBootstrap("i686",    "2100ebf36befde73b08efaa7e3ccc9c218a8b5e7d69db06e16e364ab8b7dfbd5", version)
-        downloadBootstrap("x86_64",  "3f5192f63595426370aa69f102fac07ae00c12154878eddec24e8406e640a67f", version)
+        def version = "2022.04.28-r6" + "+" + "apt-android-5"
+        downloadBootstrap("aarch64", "913609d439415c828c5640be1b0561467e539cb1c7080662decaaca2fb4820e7", version)
+        downloadBootstrap("arm",     "26bfb45304c946170db69108e5eb6e3641aad751406ce106c80df80cad2eccf8", version)
+        downloadBootstrap("i686",    "46dcfeb5eef67ba765498db9fe4c50dc4690805139aa0dd141a9d8ee0693cd27", version)
+        downloadBootstrap("x86_64",  "615b590679ee6cd885b7fd2ff9473c845e920f9b422f790bb158c63fe42b8481", version)
     }
 }
 
