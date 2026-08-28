@@ -42,12 +42,23 @@ jobs:
 
       - name: Ensure container + install Android SDK components for termux-am
         run: |
-          # run-docker.sh creates the builder container on first use; use it to install
-          # the extra SDK components termux-am needs (build-tools 30.0.3, platform 33).
+          set -o pipefail
           ./scripts/run-docker.sh bash -lc '
+            set -x
             SDK="$HOME/lib/android-sdk-9123335"
-            yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" --install "build-tools;30.0.3" "platforms;android-33"
-          ' 2>&1 | tail -20
+            ls -la "$SDK" | head -20
+            echo "sdkmanager candidates:"
+            find "$SDK" -maxdepth 4 -name sdkmanager 2>/dev/null
+            SM="$(find "$SDK" -maxdepth 4 -name sdkmanager 2>/dev/null | head -1)"
+            if [ -n "$SM" ]; then
+              yes | "$SM" --sdk_root="$SDK" --install "build-tools;30.0.3" "platforms;android-33"
+              echo "install exit: $?"
+              ls "$SDK/build-tools" 2>/dev/null
+              ls "$SDK/platforms" 2>/dev/null
+            else
+              echo "NO SDKMANAGER FOUND"
+            fi
+          ' 2>&1 | tail -40
 
       - name: Build aarch64 bootstrap from source
         run: |
