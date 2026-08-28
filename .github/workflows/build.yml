@@ -38,6 +38,19 @@ jobs:
           echo "${{ secrets.KOPUS_KEYSTORE }}" | base64 -d > kopus-keystore.jks
         shell: bash
 
+      - name: Wait for bootstrap release
+        run: |
+          for i in $(seq 1 120); do
+            if curl -sfI "https://github.com/yuc31gu1/termux-kopus/releases/download/bootstrap-kopus/bootstrap-aarch64.zip" >/dev/null 2>&1; then
+              echo "bootstrap release ready"
+              exit 0
+            fi
+            echo "waiting for bootstrap release ($i/120)..."
+            sleep 30
+          done
+          echo "bootstrap release not found after 60 minutes" >&2
+          exit 1
+
       - name: Build release APK
         env:
           KOPUS_KEYSTORE: ${{ github.workspace }}/kopus-keystore.jks
