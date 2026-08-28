@@ -25,10 +25,13 @@ jobs:
 
       - name: Build aarch64 bootstrap from source
         run: |
-          ./scripts/run-docker.sh ./scripts/build-bootstraps.sh --architectures aarch64 2>&1 | tail -30
+          set -o pipefail
+          ./scripts/run-docker.sh ./scripts/build-bootstraps.sh --architectures aarch64 2>&1 | tee /tmp/bootstrap-build.log | tail -60
 
       - name: List output
-        run: ls -la bootstrap-aarch64.zip
+        run: |
+          ls -la /home/runner/work/termux-kopus/termux-kopus/bootstrap-aarch64.zip 2>/dev/null || true
+          find / -name "bootstrap-aarch64.zip" 2>/dev/null | head
 
       - name: Compute checksum
         id: checksum
