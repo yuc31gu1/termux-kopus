@@ -23,6 +23,23 @@ jobs:
           sed -i 's/TERMUX_APP__PACKAGE_NAME="com.termux"/TERMUX_APP__PACKAGE_NAME="com.termux.kopus"/' scripts/properties.sh
           grep -n "TERMUX_APP__PACKAGE_NAME=" scripts/properties.sh | head -3
 
+      - name: Patch license search to find exact-case variants
+        run: |
+          python3 - <<'EOF'
+          import re
+          p = 'scripts/build/termux_step_install_license.sh'
+          s = open(p).read()
+          old = "COMMON_LICENSE_FILES=( # search list for licenses with copyright information"
+          new = ("COMMON_LICENSE_FILES=( 'LICENSE.md' 'LICENSE' 'COPYING' 'License.md' 'COPYING.md'"
+                  " 'license-bsd-2-clause.txt' 'LICENSE.txt' 'LICENSE-MIT'"
+                  " # search list for licenses with copyright information")
+          assert old in s
+          s = s.replace(old, new)
+          open(p, 'w').write(s)
+          print("patched")
+          EOF
+          grep -n "LICENSE.md" scripts/build/termux_step_install_license.sh | head
+
       - name: Build aarch64 bootstrap from source
         run: |
           set -o pipefail
